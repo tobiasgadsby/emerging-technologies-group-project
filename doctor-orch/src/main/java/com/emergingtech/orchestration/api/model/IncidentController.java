@@ -2,7 +2,6 @@ package com.emergingtech.orchestration.api.model;
 
 import com.emergingtech.IncidentsResource;
 import com.emergingtech.beans.Incident;
-import com.emergingtech.orchestration.common.PractitionerAction;
 import com.emergingtech.orchestration.entity.model.Patient;
 import com.emergingtech.orchestration.entity.model.Practitioner;
 import com.emergingtech.orchestration.mapper.IncidentMapper;
@@ -18,7 +17,8 @@ public class IncidentController implements IncidentsResource {
 
     private final DatabaseService databaseService;
 
-    @Inject IncidentMapper incidentMapper;
+    @Inject
+    IncidentMapper incidentMapper;
 
     public IncidentController(DatabaseService databaseService) {
         this.databaseService = databaseService;
