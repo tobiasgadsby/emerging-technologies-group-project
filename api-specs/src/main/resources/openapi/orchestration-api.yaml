@@ -1,0 +1,208 @@
+openapi: 3.0.3
+info:
+  title: Emerging Tech Project - Orchestration
+  description: API Contract for orchestration layer.
+  version: 1.0.0
+tags:
+  - name: Incidents
+    description: Management operations for incidents.
+  - name: Patients
+    description: Management operations for patients.
+  - name: Practitioners
+    description: Management operations for practitioners.
+paths:
+  /incidents/{incidentId}:
+    get:
+      tags:
+        - Incidents
+      summary: Get an incident by id
+      operationId: getIncident
+      parameters:
+        - in: path
+          name: incidentId
+          schema:
+            type: integer
+            format: int64
+            required: true
+            description: Id of incident to retrieve
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Incidents
+      summary: Update an incident
+      operationId: updateIncident
+      parameters:
+        - in: path
+          name: incidentId
+          schema:
+            type: integer
+            format: int64
+            required: true
+            description: Id of incident to update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Incident'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+        default:
+          description: Unexpected error
+    delete:
+      tags:
+        - Incidents
+      summary: Delete an incident
+      operationId: deleteIncident
+      parameters:
+        - in: path
+          name: incidentId
+          schema:
+            type: integer
+            format: int64
+            required: true
+            description: Id of incident to delete
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+        default:
+          description: Unexpected error
+  /incidents:
+    post:
+      tags:
+        - Incidents
+      summary: Create a new incident
+      operationId: createIncident
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Incident'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+        default:
+          description: Unexpected error
+  /patients/{patientId}/incidents:
+    get:
+      tags:
+        - Patients
+      summary: Retrieve all incidents for a given patient
+      operationId: getIncidentsByPatientId
+      parameters:
+        - in: path
+          name: patientId
+          schema:
+            type: integer
+            format: int64
+            required: true
+            description: Id of patient to retrieve incidents for
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Incident'
+                type: array
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+        default:
+          description: Unexpected error
+  /practitioners/{practitionerId}/incidents:
+    get:
+      tags:
+        - Practitioners
+      summary: Retrieve all incidents for a given practitioner
+      operationId: getIncidentsByPractitionerId
+      parameters:
+        - in: path
+          name: practitionerId
+          schema:
+            type: integer
+            format: int64
+            required: true
+            description: Id of practitioner to retrieve incidents for
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Incident'
+                type: array
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+        default:
+          description: Unexpected error
+components:
+  schemas:
+    Incident:
+      required:
+        - practitionerId
+        - patientId
+      type: object
+      properties:
+        incidentId:
+          type: integer
+          format: int64
+        practitionerId:
+          type: integer
+          format: int64
+        patientId:
+          type: integer
+          format: int64
+        practitionerAction:
+          type: string
+          enum:
+            - NO_ACTION_TAKEN
+            - HOSPITAL_TRANSFER_URGENT
+        status:
+          type: string
+          enum:
+            - IN_PROGRESS
+            - RESOLVED
+            - CANCELLED

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+message Coordinates {
+  double x = 1;
+  double y = 2;
+}
+
+enum IncidentStatus {
+  IN_PROGRESS = 0;
+  RESOLVED = 1;
+  CANCELLED = 2;
+}
