@@ -1,5 +1,6 @@
 {:paths ["src" "resources"]
- :deps {org.clojure/clojure {:mvn/version "1.12.4"}}
+ :deps {org.clojure/clojure {:mvn/version "1.12.4"}
+        aysylu/loom {:mvn/version "1.0.2"}}
  :aliases
  {:run-m {:main-opts ["-m" "jamescrake-merani.resource-mapping"]}
   :run-x {:ns-default jamescrake-merani.resource-mapping
