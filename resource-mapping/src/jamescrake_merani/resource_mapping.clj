@@ -19,3 +19,8 @@
 ;; somewhere. In that case progress can be set to 0, but in reality it will be
 ;; ignored.
 (defrecord Coordinate [current-node destination-node progress])
+
+(def positions
+  {:hospital [(Coordinate. :e nil 0)]
+   :patient [(Coordinate. :j nil 0)]
+   :ambulance [(Coordinate. :b :c 5)]})
