@@ -22,5 +22,4 @@
 
 (def positions
   {:hospital [(Coordinate. :e nil 0)]
-   :patient [(Coordinate. :j nil 0)]
    :ambulance [(Coordinate. :b :c 5)]})
