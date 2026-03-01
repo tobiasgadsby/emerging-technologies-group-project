@@ -32,5 +32,6 @@
 (defn dispatch [graph patient-location]
   (let [nearest-hospital (nearest graph patient-location (map :current-node (:hospital positions)))
         nearest-ambulance (nearest graph patient-location (map :current-node (:ambulance positions)))]
-    (+ (second nearest-hospital) (second nearest-ambulance))))
-
+    {:eta (+ (second nearest-hospital) (second nearest-ambulance))
+     :nearest-ambulance (last (first nearest-ambulance))
+     :nearest-hospital (last (first nearest-hospital))}))
