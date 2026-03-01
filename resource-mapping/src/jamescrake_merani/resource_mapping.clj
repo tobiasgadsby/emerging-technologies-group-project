@@ -28,3 +28,9 @@
 (defn nearest [graph current-position items]
   (apply min-key second (map (partial la/dijkstra-path-dist graph) (repeat (count items) current-position) items)))
 
+;; TODO: At the moment, just consider where the ambulance is, not where its going to.
+(defn dispatch [graph patient-location]
+  (let [nearest-hospital (nearest graph patient-location (map :current-node (:hospital positions)))
+        nearest-ambulance (nearest graph patient-location (map :current-node (:ambulance positions)))]
+    (+ (second nearest-hospital) (second nearest-ambulance))))
+
