@@ -2,6 +2,6 @@
   (:require [clojure.test :refer [deftest is testing]]
             [jamescrake-merani.resource-mapping :as sut])) ; system under test
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest dispatch-test
+  (testing "Tests dispatch reports the right eta."
+    (is (= (:eta (sut/dispatch sut/example-road-map :c)) 28))))
