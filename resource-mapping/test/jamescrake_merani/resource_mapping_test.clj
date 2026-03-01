@@ -4,4 +4,5 @@
 
 (deftest dispatch-test
   (testing "Tests dispatch reports the right eta."
-    (is (= (:eta (sut/dispatch sut/example-road-map :c)) 28))))
+    (is (= (:eta (sut/dispatch sut/example-road-map :c)) 28))
+    (is (= (:eta (sut/dispatch sut/example-road-map :f)) 26))))
