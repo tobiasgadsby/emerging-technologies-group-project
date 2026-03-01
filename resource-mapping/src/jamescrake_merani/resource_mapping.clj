@@ -25,7 +25,7 @@
   {:hospital [(Coordinate. :b nil 0)
               (Coordinate. :i nil 0 )]
    :ambulance [(Coordinate. :d :e 2)
-               (Coordinate :g nil 0)]})
+               (Coordinate. :g nil 0)]})
 
 (defn nearest [graph current-position items]
   (apply min-key second (map (partial la/dijkstra-path-dist graph) (repeat (count items) current-position) items)))
