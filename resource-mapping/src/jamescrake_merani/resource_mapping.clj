@@ -1,5 +1,6 @@
 (ns jamescrake-merani.resource-mapping
-  (:require [loom.graph :as lg])
+  (:require [loom.graph :as lg]
+            [loom.alg :as la])
   (:gen-class))
 
 (def example-road-map
@@ -23,3 +24,7 @@
 (def positions
   {:hospital [(Coordinate. :e nil 0)]
    :ambulance [(Coordinate. :b :c 5)]})
+
+(defn nearest [graph current-position items]
+  (apply min-key second (map (partial la/dijkstra-path-dist graph) (repeat (count items) current-position) items)))
+
