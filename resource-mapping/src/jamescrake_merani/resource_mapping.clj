@@ -25,8 +25,8 @@
 (def positions
   {:hospital [(Coordinate. :b nil 0)
               (Coordinate. :i nil 0 )]
-   :ambulance [(Coordinate. :d :e 2)
-               (Coordinate. :g nil 0)]})
+   :ambulance [(AmbulanceStatus. (Coordinate. :d :e 2) :random-walk)
+               (AmbulanceStatus. (Coordinate. :g nil 0) :random-walk)]})
 
 (defn nearest [graph current-position items]
   (apply min-key second (map (partial la/dijkstra-path-dist graph) (repeat (count items) current-position) items)))
