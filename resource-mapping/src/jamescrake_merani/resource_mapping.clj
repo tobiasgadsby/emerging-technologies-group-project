@@ -31,6 +31,15 @@
 (defn nearest [graph current-position items]
   (apply min-key second (map (partial la/dijkstra-path-dist graph) (repeat (count items) current-position) items)))
 
+(defn dispatch-ambulance [graph positions ambulance-to-dispatch location]
+  (let [path-to-hospital (la/dijkstra-path graph ambulance-to-dispatch location)
+        new-ambulance (AmbulanceStatus.
+                       (Coordinate. (-> ambulance-to-dispatch :coordinate :current-node)
+                                    (first path-to-hospital)
+                                    (lg/weight graph (-> ambulance-to-dispatch :coordinate :current) (:current-node location)))
+                       path-to-hospital)]
+    (assoc positions :ambulance (conj new-ambulance (remove #(= % ambulance-to-dispatch) (:ambulance positions))))))
+
 ;; TODO: At the moment, just consider where the ambulance is, not where its going to.
 (defn dispatch [graph patient-location]
   (let [nearest-hospital (nearest graph patient-location (map :current-node (:hospital positions)))
@@ -38,4 +47,5 @@
         nearest-ambulance (nearest graph patient-location (map #(-> % :coordinate :current-node) available-ambulances))]
     {:eta (+ (second nearest-hospital) (second nearest-ambulance))
      :nearest-ambulance (last (first nearest-ambulance))
-     :nearest-hospital (last (first nearest-hospital))}))
+     :nearest-hospital (last (first nearest-hospital))
+     :new-positions (dispatch-ambulance graph nearest-ambulance patient-location)}))
