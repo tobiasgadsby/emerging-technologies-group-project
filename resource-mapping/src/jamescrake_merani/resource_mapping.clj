@@ -49,3 +49,9 @@
      :nearest-ambulance (last (first nearest-ambulance))
      :nearest-hospital (last (first nearest-hospital))
      :new-positions (dispatch-ambulance graph nearest-ambulance patient-location)}))
+
+(defn update-ambulance [ticks-passed ambulance]
+  (throw "Not implemented."))
+
+(defn tick [graph positions ticks-passed]
+  (assoc positions :ambulance (map (partial update-ambulance ticks-passed) (:ambulance positions))))
