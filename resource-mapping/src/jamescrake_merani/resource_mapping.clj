@@ -50,8 +50,16 @@
      :nearest-hospital (last (first nearest-hospital))
      :new-positions (dispatch-ambulance graph nearest-ambulance patient-location)}))
 
+(defn update-ambulance-random-walk [ticks-passed ambulance]
+  (throw "Not implemented"))
+
+(defn update-ambulance-progress-to-journey [ticks-passed ambulance]
+  (throw "Not implemented"))
+
 (defn update-ambulance [ticks-passed ambulance]
-  (throw "Not implemented."))
+  (if (= (:status ambulance) :random-walk)
+    (update-ambulance-random-walk ticks-passed ambulance)
+    (update-ambulance-progress-to-journey ticks-passed ambulance)))
 
 (defn tick [graph positions ticks-passed]
   (assoc positions :ambulance (map (partial update-ambulance ticks-passed) (:ambulance positions))))
