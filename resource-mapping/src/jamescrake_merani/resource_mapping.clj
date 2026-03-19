@@ -17,9 +17,9 @@
     :j {:g 12 :i 16}}))
 
 ;; destination-node can be nil if the agent isn't currently travelling
-;; somewhere. In that case progress can be set to 0, but in reality it will be
-;; ignored.
-(defrecord Coordinate [current-node destination-node progress])
+;; somewhere. In that case progress can be set to 0, and current-path can be set
+;; to nil, but in reality it will be ignored.
+(defrecord Coordinate [current-node destination-node current-path progress])
 (defrecord AmbulanceStatus [coordinate status])
 
 (def positions
