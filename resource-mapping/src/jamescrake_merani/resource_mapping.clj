@@ -28,6 +28,7 @@
    :ambulance [(AmbulanceStatus. (Coordinate. :d :e 2) :random-walk)
                (AmbulanceStatus. (Coordinate. :g nil 0) :random-walk)]})
 
+;; TODO: Perhaps use memoize?
 (defn nearest [graph current-position items]
   (apply min-key second (map (partial la/dijkstra-path-dist graph) (repeat (count items) current-position) items)))
 
