@@ -50,8 +50,11 @@
      :nearest-hospital (last (first nearest-hospital))
      :new-positions (dispatch-ambulance graph nearest-ambulance patient-location)}))
 
+(defn calculate-updated-progress [graph ticks-passed ambulance]
+  (- (-> ambulance :coordinate :progress) ticks-passed))
+
 (defn update-ambulance-random-walk [graph ticks-passed ambulance]
-  (let [updated-progress (- (-> ambulance :coordinate :progress) ticks-passed)]
+  (let [updated-progress (calculate-updated-progress graph ticks-passed ambulance)]
     (if (> updated-progress 0)
       (assoc-in ambulance [:coordinate :progress] updated-progress)
       (let [next-node (rand-nth (lg/out-edges graph (get-in ambulance :coordinate :current-node)))]
