@@ -16,7 +16,8 @@
     :i {:f 12 :g 20 :h 14 :j 16}
     :j {:g 12 :i 16}}))
 
-(defrecord AmbulanceStatus [current-node movement-status path])
+(defrecord AmbulanceStatus [current-node movement-status movement-progress path])
+;; movement-progress can be :stationary if the ambulance is not moving.
 ;; If the path is empty, use the movement status to work out what to do next.
 (def ambulance-movement-status #{:random-walk :patient :hospital})
 
