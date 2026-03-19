@@ -22,10 +22,9 @@
 (def ambulance-movement-status #{:random-walk :patient :hospital})
 
 (def positions
-  {:hospital [(Coordinate. :b nil 0)
-              (Coordinate. :i nil 0 )]
-   :ambulance [(AmbulanceStatus. (Coordinate. :d :e 2) :random-walk)
-               (AmbulanceStatus. (Coordinate. :g nil 0) :random-walk)]})
+  {:hospital [:b :i]
+   :ambulance [(AmbulanceStatus. :d :random-walk 2 '(:e))
+               (AmbulanceStatus. :g :random-walk 5 '(:c))]})
 
 ;; TODO: Perhaps use memoize?
 (defn nearest [graph current-position items]
