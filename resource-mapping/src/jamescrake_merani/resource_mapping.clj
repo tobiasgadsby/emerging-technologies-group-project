@@ -37,7 +37,8 @@
         new-ambulance (AmbulanceStatus.
                        (Coordinate. (-> ambulance-to-dispatch :coordinate :current-node)
                                     (first path-to-hospital)
-                                    (lg/weight graph (-> ambulance-to-dispatch :coordinate :current) (:current-node location)))
+                                    (lg/weight graph (-> ambulance-to-dispatch :coordinate :current) (:current-node location))
+                                    :patient-pickup)
                        path-to-hospital)]
     (assoc positions :ambulance (conj new-ambulance (remove #(= % ambulance-to-dispatch) (:ambulance positions))))))
 
