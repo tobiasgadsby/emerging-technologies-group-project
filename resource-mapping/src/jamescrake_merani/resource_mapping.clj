@@ -64,8 +64,18 @@
                                        (+ (lg/weight graph (get-in ambulance :coordinate :current-node) next-node) updated-progress))
                           :random-walk)))))
 
-(defn update-ambulance-progress-to-journey [ticks-passed ambulance]
-  (throw "Not implemented"))
+;; TODO: Next to functions are not finished!
+(defn journey-next-destination [graph ambulance]
+  (if (any? (map #(= (:current-node %) (-> ambulance :coordinate :current-node)) (:ambulance positions)))
+    nil
+    (nearest (:coordinate ambulance) (:ambulance positions))))
+
+(defn update-ambulance-progress-to-journey [graph ticks-passed ambulance]
+  (let [updated-progress (calculate-updated-progress graph ticks-passed ambulance)]
+    (if (> updated-progress 0)
+      (assoc-in ambulance [:coordinate :progress] updated-progress)
+      (let [next-node (journey-next-destination graph ambulance)]
+        (AmbulanceStatus. (Coordinate (-> ambulance :coordinate :current-node) next-node ))) )))
 
 (defn update-ambulance [ticks-passed ambulance]
   (if (= (:status ambulance) :random-walk)
