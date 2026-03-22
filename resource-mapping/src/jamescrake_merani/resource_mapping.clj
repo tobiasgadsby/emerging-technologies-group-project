@@ -35,7 +35,7 @@
         new-ambulance (AmbulanceStatus.
                        (:coordinate ambulance-to-dispatch)
                        :patient
-                       (lg/weight graph (first path-to-hospital))
+                       (lg/weight graph (first path-to-hospital) (second path-to-hospital))
                        path-to-hospital)]
     (assoc positions :ambulance (conj new-ambulance (remove #(= % ambulance-to-dispatch) (:ambulance positions))))))
 
