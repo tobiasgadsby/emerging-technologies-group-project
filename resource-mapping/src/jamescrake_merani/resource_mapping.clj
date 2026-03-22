@@ -40,7 +40,7 @@
     (assoc current-positions :ambulance (conj (remove #(= % ambulance-to-dispatch) (:ambulance current-positions)) new-ambulance ))))
 
 ;; TODO: At the moment, just consider where the ambulance is, not where its going to.
-(defn dispatch [graph patient-location]
+(defn dispatch [graph current-positions patient-location]
   (let [[path-to-nearest-hospital nearest-hospital-distance] (nearest graph patient-location (:hospital positions))
         available-ambulances (filter #(= (:movement-status %) :random-walk) (:ambulance positions))
         [path-to-nearest-ambulance nearest-ambulance-distance] (nearest graph patient-location (map #(:current-node %) available-ambulances))
@@ -49,7 +49,7 @@
      :nearest-ambulance (last (first nearest-ambulance))
      :nearest-hospital (last path-to-nearest-hospital)
      :new-positions (dispatch-ambulance graph
-                                        positions
+                                        current-positions
                                         nearest-ambulance
                                         patient-location
                                         path-to-nearest-ambulance)}))
