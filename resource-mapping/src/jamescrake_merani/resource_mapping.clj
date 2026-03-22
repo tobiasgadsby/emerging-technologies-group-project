@@ -84,10 +84,10 @@
               (assoc :current-node (first (:path ambulance)))
               (assoc :path (rest (:path ambulance)))))))))
 
-(defn update-ambulance [ticks-passed ambulance]
+(defn update-ambulance [graph ticks-passed ambulance]
   (if (= (:status ambulance) :random-walk)
-    (update-ambulance-random-walk ticks-passed ambulance)
-    (update-ambulance-progress-to-journey ticks-passed ambulance)))
+    (update-ambulance-random-walk graph ticks-passed ambulance)
+    (update-ambulance-progress-to-journey graph ticks-passed ambulance)))
 
 (defn tick [graph positions ticks-passed]
-  (assoc positions :ambulance (map (partial update-ambulance ticks-passed) (:ambulance positions))))
+  (assoc positions :ambulance (map (partial update-ambulance graph ticks-passed) (:ambulance positions))))
