@@ -42,7 +42,7 @@
 ;; TODO: At the moment, just consider where the ambulance is, not where its going to.
 (defn dispatch [graph patient-location]
   (let [nearest-hospital (nearest graph patient-location (:hospital positions))
-        available-ambulances (filter #(= (:status %) :random-walk) (:ambulance positions))
+        available-ambulances (filter #(= (:movement-status %) :random-walk) (:ambulance positions))
         nearest-ambulance (nearest graph patient-location (map #(:current-node %) available-ambulances))]
     {:eta (+ (second nearest-hospital) (second nearest-ambulance))
      :nearest-ambulance (last (first nearest-ambulance))
