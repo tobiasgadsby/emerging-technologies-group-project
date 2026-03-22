@@ -50,7 +50,7 @@
      :nearest-hospital (last path-to-nearest-hospital)
      :new-positions (dispatch-ambulance graph
                                         positions
-                                        nearest-hospital
+                                        nearest-ambulance
                                         patient-location
                                         path-to-nearest-ambulance)}))
 
