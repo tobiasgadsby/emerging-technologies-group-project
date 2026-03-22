@@ -31,7 +31,7 @@
   (apply min-key second (map (partial la/dijkstra-path-dist graph) (repeat (count items) current-position) items)))
 
 (defn dispatch-ambulance [graph positions ambulance-to-dispatch location]
-  (let [path-to-hospital (la/dijkstra-path graph ambulance-to-dispatch location)
+  (let [path-to-hospital (la/dijkstra-path graph (:current-node ambulance-to-dispatch) location)
         new-ambulance (AmbulanceStatus.
                        (:coordinate ambulance-to-dispatch)
                        :patient
