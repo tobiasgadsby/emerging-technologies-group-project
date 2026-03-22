@@ -37,7 +37,7 @@
                        :patient
                        (lg/weight graph (first path-to-hospital) (second path-to-hospital))
                        path-to-hospital)]
-    (assoc positions :ambulance (conj new-ambulance (remove #(= % ambulance-to-dispatch) (:ambulance positions))))))
+    (assoc positions :ambulance (conj (remove #(= % ambulance-to-dispatch) (:ambulance positions)) new-ambulance ))))
 
 ;; TODO: At the moment, just consider where the ambulance is, not where its going to.
 (defn dispatch [graph patient-location]
