@@ -33,7 +33,7 @@
 (defn dispatch-ambulance [graph positions ambulance-to-dispatch location]
   (let [path-to-hospital (la/dijkstra-path graph (:current-node ambulance-to-dispatch) location)
         new-ambulance (AmbulanceStatus.
-                       (:coordinate ambulance-to-dispatch)
+                       (:current-node ambulance-to-dispatch)
                        :patient
                        (lg/weight graph (first path-to-hospital) (second path-to-hospital))
                        path-to-hospital)]
