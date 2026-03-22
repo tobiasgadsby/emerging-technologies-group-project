@@ -30,7 +30,7 @@
 (defn nearest [graph current-position items]
   (apply min-key second (map (partial la/dijkstra-path-dist graph) (repeat (count items) current-position) items)))
 
-(defn dispatch-ambulance [graph positions ambulance-to-dispatch location]
+(defn dispatch-ambulance [graph positions ambulance-to-dispatch location path-to-location]
   (let [path-to-hospital (la/dijkstra-path graph (:current-node ambulance-to-dispatch) location)
         new-ambulance (AmbulanceStatus.
                        (:current-node ambulance-to-dispatch)
@@ -43,11 +43,15 @@
 (defn dispatch [graph patient-location]
   (let [nearest-hospital (nearest graph patient-location (:hospital positions))
         available-ambulances (filter #(= (:movement-status %) :random-walk) (:ambulance positions))
-        nearest-ambulance (nearest graph patient-location (map #(:current-node %) available-ambulances))]
+        [path-to-nearest-ambulance nearest-ambulance-location] (nearest graph patient-location (map #(:current-node %) available-ambulances))]
     {:eta (+ (second nearest-hospital) (second nearest-ambulance))
      :nearest-ambulance (last (first nearest-ambulance))
      :nearest-hospital (last (first nearest-hospital))
-     :new-positions (dispatch-ambulance graph positions nearest-ambulance patient-location)}))
+     :new-positions (dispatch-ambulance graph
+                                        positions
+                                        (first (filter #(= (:current-node %) nearest-ambulance-location) (:ambulance positions)))
+                                        patient-location
+                                        path-to-nearest-ambulance)}))
 
 (defn calculate-updated-progress [graph ticks-passed ambulance]
   (- (-> ambulance :coordinate :progress) ticks-passed))
