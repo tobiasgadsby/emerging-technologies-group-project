@@ -47,7 +47,7 @@
     {:eta (+ (second nearest-hospital) (second nearest-ambulance))
      :nearest-ambulance (last (first nearest-ambulance))
      :nearest-hospital (last (first nearest-hospital))
-     :new-positions (dispatch-ambulance graph nearest-ambulance patient-location)}))
+     :new-positions (dispatch-ambulance graph positions nearest-ambulance patient-location)}))
 
 (defn calculate-updated-progress [graph ticks-passed ambulance]
   (- (-> ambulance :coordinate :progress) ticks-passed))
