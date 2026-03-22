@@ -55,7 +55,7 @@
                                         path-to-nearest-ambulance)}))
 
 (defn calculate-updated-progress [graph ticks-passed ambulance]
-  (- (-> ambulance :coordinate :progress) ticks-passed))
+  (- (:movement-progress ambulance) ticks-passed))
 
 (defn update-ambulance-random-walk [graph ticks-passed ambulance]
   (let [updated-progress (calculate-updated-progress graph ticks-passed ambulance)]
