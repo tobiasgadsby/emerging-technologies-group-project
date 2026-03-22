@@ -63,6 +63,11 @@
          (lg/weight (:current-node ambulance) next-node)
          (list next-node))))))
 
+(defn ambulance-next-movement-status [current-movement-status]
+  (if (= current-movement-status :patient)
+    :hospital
+    :random-walk))
+
 ;; TODO: Next to functions are not finished!
 (defn journey-next-destination [graph ambulance]
   (if (any? (map #(= (:current-node %) (-> ambulance :coordinate :current-node)) (:ambulance positions)))
