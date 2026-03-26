@@ -77,12 +77,11 @@
   (let [updated-progress (calculate-updated-progress graph ticks-passed ambulance)]
     (if (> updated-progress 0)
       (assoc ambulance :movement-progress updated-progress)
-      (let [next-node (journey-next-destination graph ambulance)]
-        (if (nil? (first (:path ambulance)))
-          (assoc ambulance :movement-status (ambulance-next-movement-status))
-          (-> ambulance
-              (assoc :current-node (first (:path ambulance)))
-              (assoc :path (rest (:path ambulance)))))))))
+      (if (nil? (first (:path ambulance)))
+        (assoc ambulance :movement-status (ambulance-next-movement-status))
+        (-> ambulance
+            (assoc :current-node (first (:path ambulance)))
+            (assoc :path (rest (:path ambulance))))))))
 
 (defn update-ambulance [graph ticks-passed ambulance]
   (if (= (:status ambulance) :random-walk)
