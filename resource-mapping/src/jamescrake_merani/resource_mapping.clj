@@ -54,11 +54,11 @@
                                         patient-location
                                         path-to-nearest-ambulance)}))
 
-(defn calculate-updated-progress [graph ticks-passed ambulance]
+(defn calculate-updated-progress [ticks-passed ambulance]
   (- (:movement-progress ambulance) ticks-passed))
 
 (defn update-ambulance-random-walk [graph ticks-passed ambulance]
-  (let [updated-progress (calculate-updated-progress graph ticks-passed ambulance)]
+  (let [updated-progress (calculate-updated-progress ticks-passed ambulance)]
     (if (> updated-progress 0)
       (assoc ambulance :movement-progress updated-progress)
       (let [next-node (rand-nth (lg/out-edges graph (:current-node ambulance)))]
