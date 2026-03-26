@@ -61,12 +61,16 @@
   (let [updated-progress (calculate-updated-progress graph ticks-passed ambulance)]
     (if (> updated-progress 0)
       (assoc ambulance :movement-progress updated-progress)
-      (let [next-node (rand-nth (lg/out-edges graph (get-in ambulance :coordinate :current-node)))]
-        (AmbulanceStatus.
-         (first (:path ambulance))
-         :random-walk
-         (lg/weight (:current-node ambulance) next-node)
-         (list next-node))))))
+      (let [next-node (rand-nth (lg/out-edges graph (:current-node ambulance)))]
+        (update-ambulance-random-walk
+         graph
+         (abs updated-progress)
+         (AmbulanceStatus.
+          (first (:path ambulance))
+          :random-walk
+          (lg/weight graph (:current-node ambulance) next-node)
+          (list next-node)))
+        ))))
 
 (defn ambulance-next-movement-status [current-movement-status]
   (if (= current-movement-status :patient)
