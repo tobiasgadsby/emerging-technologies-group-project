@@ -84,7 +84,7 @@
             (assoc :path (rest (:path ambulance))))))))
 
 (defn update-ambulance [graph ticks-passed ambulance]
-  (if (= (:status ambulance) :random-walk)
+  (if (= (:movement-status ambulance) :random-walk)
     (update-ambulance-random-walk graph ticks-passed ambulance)
     (update-ambulance-progress-to-journey graph ticks-passed ambulance)))
 
