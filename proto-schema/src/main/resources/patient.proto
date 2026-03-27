@@ -1,4 +1,5 @@
 syntax = "proto3";
+package com.emergingtech.proto;
 
 import "common.proto";
 

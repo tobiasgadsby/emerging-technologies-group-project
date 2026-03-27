@@ -1,12 +1,19 @@
 syntax = "proto3";
+package com.emergingtech.proto;
 
 message Coordinates {
   double x = 1;
   double y = 2;
+  int32 srid = 3;
 }
 
 enum IncidentStatus {
-  IN_PROGRESS = 0;
-  RESOLVED = 1;
-  CANCELLED = 2;
+  AWAITING_PRACTITIONER_ACTION = 0;
+  IN_PROGRESS = 1;
+  RESOLVED = 2;
+}
+
+enum PractitionerAction {
+  NO_ACTION_TAKEN = 0;
+  HOSPITAL_TRANSFER_URGENT = 1;
 }

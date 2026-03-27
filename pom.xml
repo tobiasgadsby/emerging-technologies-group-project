@@ -10,22 +10,23 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>doctor-orch</module>
-        <!-- add more modules here later -->
+        <module>api-specs</module>
+        <module>proto-schema</module>
+        <module>db-mgmt</module>
+        <module>practitioner-orch</module>
+        <module>patient-orch</module>
+        <module>resource-orch</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
 
-        <!-- Quarkus -->
         <quarkus.platform.version>3.31.3</quarkus.platform.version>
 
-        <!-- Tooling -->
         <mapstruct.version>1.5.5.Final</mapstruct.version>
     </properties>
 
-    <!-- ✅ THIS is what Quarkus was missing -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -37,6 +38,13 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>confluent</id>
+            <url>https://packages.confluent.io/maven/</url>
+        </repository>
+    </repositories>
 
     <build>
         <pluginManagement>
@@ -83,6 +91,8 @@
                         </annotationProcessorPaths>
                     </configuration>
                 </plugin>
+
+
 
             </plugins>
         </pluginManagement>

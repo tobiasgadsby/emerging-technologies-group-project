@@ -3,3 +3,4 @@
 */target
 .quarkus
 *.iml
+*/.mvn
