@@ -1,5 +1,5 @@
-export type IncidentStatus = "IN_PROGRESS" | "RESOLVED" | "CANCELLED";
-export type PractitionerAction = "NO_ACTION_TAKEN" | "HOSPITAL_TRANSFER_URGENT";
+export type IncidentStatus = "IN_PROGRESS" | "RESOLVED";
+export type PractitionerAction = "NO_ACTION" | "HOSPITAL_TRANSFER";
 
 export interface Incident {
   incidentId: number;
