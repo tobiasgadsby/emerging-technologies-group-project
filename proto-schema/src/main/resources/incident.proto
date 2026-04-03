@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package com.emergingtech.proto;
 
+import "common.proto";
+
 message IncidentRequest {
   int64 patientId = 1;
   int64 practitionerId = 2;
@@ -9,5 +11,6 @@ message IncidentRequest {
 
 message IncidentResponse {
   int64 incidentId = 1;
-  string status = 2;
+  int64 patientId = 2;
+  IncidentStatus incidentStatus = 3;
 }
