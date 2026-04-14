@@ -1,0 +1,21 @@
+syntax = "proto3";
+package com.emergingtech.proto;
+
+import "common.proto";
+import "google/protobuf/timestamp.proto";
+
+message ResourceMappingRequest {
+  int64 mappingId = 1;
+  Coordinates patientCoordinates = 2;
+}
+
+message ResourceMappingResponse {
+  int64 mappingId = 1;
+  google.protobuf.Timestamp arrivalTime = 2;
+}
+
+message PractitionerActionRequest {
+  int64 practitionerId = 1;
+  int64 patientId = 2;
+  int64 incidentId = 3;
+}
