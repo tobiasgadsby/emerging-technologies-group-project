@@ -2,7 +2,7 @@
   (:refer-clojure :exclude [test])
   (:require [clojure.tools.build.api :as b]))
 
-(def lib 'net.clojars.jamescrake-merani/resource-mapping)
+(def lib 'me.jamescrake-merani/resource-mapping)
 (def version "0.1.0-SNAPSHOT")
 (def main 'jamescrake-merani.resource-mapping)
 (def class-dir "target/classes")
