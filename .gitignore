@@ -4,3 +4,8 @@
 .quarkus
 *.iml
 */.mvn
+
+.classpath
+.factorypath
+.project
+.settings
