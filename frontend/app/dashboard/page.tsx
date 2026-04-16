@@ -19,7 +19,7 @@ const MOCK_INCIDENTS: Incident[] = [
     transcript:
         '"I have chest pain"',
     audioDuration: "1m 12s",
-    receivedAt: new Date(Date.now() - 5 * 60000).toISOString(),
+    receivedAt: "2026-04-16T10:49:39.000Z",
 },
 {
     incidentId: 42846,
@@ -34,7 +34,7 @@ const MOCK_INCIDENTS: Incident[] = [
     transcript:
         '"I feel like I keep spinning. I feel nauseous too."',
     audioDuration: "47s",
-    receivedAt: new Date(Date.now() - 15 * 60000).toISOString(),
+    receivedAt: "2026-04-16T10:39:39.000Z",
 },
 {
     incidentId: 42845,
@@ -49,7 +49,7 @@ const MOCK_INCIDENTS: Incident[] = [
     transcript:
         '"I feel really nauseous and my stomach hurts a bit.',
     audioDuration: "32s",
-    receivedAt: new Date(Date.now() - 25 * 60000).toISOString(),
+    receivedAt: "2026-04-16T10:29:39.000Z",
 },
 {
     incidentId: 42844,
@@ -65,7 +65,7 @@ const MOCK_INCIDENTS: Incident[] = [
     transcript:
       '"I have a pretty bad headache behind my eyes."',
     audioDuration: "28s",
-    receivedAt: new Date(Date.now() - 45 * 60000).toISOString(),
+    receivedAt: "2026-04-16T10:09:39.000Z",
   },
   {
     incidentId: 42843,
@@ -81,7 +81,7 @@ const MOCK_INCIDENTS: Incident[] = [
     transcript:
       '"I felt something pop in my back when I bent down to pick something up. Now I can\'t move without excruciating pain."',
     audioDuration: "42s",
-    receivedAt: new Date(Date.now() - 60 * 60000).toISOString(),
+    receivedAt: "2026-04-16T09:54:39.000Z",
   },
 ];
 
