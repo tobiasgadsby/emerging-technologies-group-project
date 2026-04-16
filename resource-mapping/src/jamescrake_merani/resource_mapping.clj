@@ -26,7 +26,6 @@
    :ambulance [(AmbulanceStatus. :d :random-walk 2 '(:e))
                (AmbulanceStatus. :g :random-walk 5 '(:c))]})
 
-;; TODO: Perhaps use memoize?
 (defn nearest [graph current-position items]
   (apply min-key second (map (partial la/dijkstra-path-dist graph) (repeat (count items) current-position) items)))
 
@@ -39,7 +38,6 @@
                        path-to-hospital)]
     (assoc current-positions :ambulance (conj (remove #(= % ambulance-to-dispatch) (:ambulance current-positions)) new-ambulance ))))
 
-;; TODO: At the moment, just consider where the ambulance is, not where its going to.
 (defn dispatch [graph current-positions patient-location]
   (let [[path-to-nearest-hospital nearest-hospital-distance] (nearest graph patient-location (:hospital positions))
         available-ambulances (filter #(= (:movement-status %) :random-walk) (:ambulance positions))
