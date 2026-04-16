@@ -42,7 +42,7 @@ dispatched"
                                                                                                                  ambulance-to-dispatch) (:ambulance current-positions)) new-ambulance))))
 
 (defn dispatch [graph current-positions patient-location]
-  "Dispatch an ambulance (from `current-position$i) to `patient-location`, working out the closest ambulance that will get the patient to the hospital as quickly as possible."
+  "Dispatch an ambulance (from `current-position`) to `patient-location`, working out the closest ambulance that will get the patient to the hospital as quickly as possible."
   (let [[path-to-nearest-hospital nearest-hospital-distance] (nearest graph patient-location (:hospital positions))
         available-ambulances (filter #(= (:movement-status %) :random-walk) (:ambulance positions))
         [path-to-nearest-ambulance nearest-ambulance-distance] (nearest graph patient-location (map #(:current-node %) available-ambulances))
