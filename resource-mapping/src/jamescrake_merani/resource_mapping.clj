@@ -4,7 +4,7 @@
   (:gen-class))
 
 (def example-road-map
-  (lg/weighted-graph 
+  (lg/weighted-graph
    {:a {:b 14 :d 12 :e 13}
     :b {:a 14 :c 16 :e 15 :f 12}
     :c {:b 16 :f 20 :g 12}
@@ -39,7 +39,7 @@ dispatched"
         new-ambulance (AmbulanceStatus. (:current-node ambulance-to-dispatch) :patient
                                         (lg/weight graph (first path-to-hospital) (second path-to-hospital))
                                         path-to-hospital)] (assoc current-positions :ambulance (conj (remove #(= %
-                                                                                                                 ambulance-to-dispatch) (:ambulance current-positions)) new-ambulance ))))
+                                                                                                                 ambulance-to-dispatch) (:ambulance current-positions)) new-ambulance))))
 
 (defn dispatch [graph current-positions patient-location]
   "Dispatch an ambulance (from `current-position$i) to `patient-location`, working out the closest ambulance that will get the patient to the hospital as quickly as possible."
@@ -73,8 +73,7 @@ dispatched"
           (first (:path ambulance))
           :random-walk
           (lg/weight graph (:current-node ambulance) next-node)
-          (list next-node)))
-        ))))
+          (list next-node)))))))
 
 (defn ambulance-next-movement-status [current-movement-status]
   "Based on `current-movement-status`, work out the next movement status."
