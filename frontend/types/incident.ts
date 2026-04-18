@@ -5,8 +5,8 @@ export interface Incident {
   incidentId: number;
   patientId: number;
   patientName: string;
-  practitionerId: number;
   patientAddress?: string;
+  practitionerId: number;
   status: IncidentStatus;
   practitionerAction?: PractitionerAction;
   reportedIssue: string;
