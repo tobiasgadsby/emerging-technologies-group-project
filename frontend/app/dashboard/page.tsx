@@ -13,13 +13,11 @@ const MOCK_INCIDENTS: Incident[] = [
     practitionerId: 1,
     status: "IN_PROGRESS",
     reportedIssue: "Chest Pain",
-    mlSummary:
-        "Blah blah blah blah.",
+    mlSummary: "Blah blah blah blah.",
     confidence: 94,
-    transcript:
-        '"I have chest pain"',
+    transcript: '"I have chest pain"',
     audioDuration: "1m 12s",
-    receivedAt: "2026-04-16T10:49:39.000Z",
+    receivedAt: "10:49AM",
 },
 {
     incidentId: 2,
@@ -28,13 +26,11 @@ const MOCK_INCIDENTS: Incident[] = [
   practitionerId: 2,
     status: "IN_PROGRESS",
     reportedIssue: "Dizziness",
-    mlSummary:
-        "Vertigo with nausea. Patient reports spinning sensation.",
+    mlSummary: "Vertigo with nausea. Patient reports spinning sensation.",
     confidence: 78,
-    transcript:
-        '"I feel like I keep spinning. I feel nauseous too."',
+    transcript: '"I feel like I keep spinning. I feel nauseous too."',
     audioDuration: "47s",
-    receivedAt: "2026-04-16T10:39:39.000Z",
+    receivedAt: "10:39AM",
 },
 {
     incidentId: 3,
@@ -43,13 +39,11 @@ const MOCK_INCIDENTS: Incident[] = [
   practitionerId: 3,
     status: "IN_PROGRESS",
     reportedIssue: "Nausea and Abdominal Discomfort",
-    mlSummary:
-        "Nausea with mild stomach discomfort.",
+    mlSummary: "Nausea with mild stomach discomfort.",
     confidence: 65,
-    transcript:
-        '"I feel really nauseous and my stomach hurts a bit.',
+    transcript: '"I feel really nauseous and my stomach hurts a bit.',
     audioDuration: "32s",
-    receivedAt: "2026-04-16T10:29:39.000Z",
+    receivedAt: "10:29AM",
 },
 {
     incidentId: 4,
@@ -59,13 +53,11 @@ const MOCK_INCIDENTS: Incident[] = [
     status: "RESOLVED",
     practitionerAction: "NO_ACTION",
     reportedIssue: "Headache",
-    mlSummary:
-      "Headache, moderate intensity. Localised at frontal region.",
+    mlSummary: "Headache, moderate intensity. Localised at frontal region.",
     confidence: 72,
-    transcript:
-      '"I have a pretty bad headache behind my eyes."',
+    transcript:'"I have a pretty bad headache behind my eyes."',
     audioDuration: "28s",
-    receivedAt: "2026-04-16T10:09:39.000Z",
+    receivedAt: "10:09AM",
   },
   {
     incidentId: 5,
@@ -75,13 +67,11 @@ const MOCK_INCIDENTS: Incident[] = [
     status: "RESOLVED",
     practitionerAction: "HOSPITAL_TRANSFER",
     reportedIssue: "Severe Back Pain",
-    mlSummary:
-      "Severe back pain when moving (9/10).",
+    mlSummary: "Severe back pain when moving (9/10).",
     confidence: 88,
-    transcript:
-      '"I felt something pop in my back when I bent down to pick something up. Now I can\'t move without excruciating pain."',
+    transcript: '"I felt something pop in my back when I bent down to pick something up. Now I can\'t move without excruciating pain."',
     audioDuration: "42s",
-    receivedAt: "2026-04-16T09:54:39.000Z",
+    receivedAt: "09:54PM",
   },
 ];
 

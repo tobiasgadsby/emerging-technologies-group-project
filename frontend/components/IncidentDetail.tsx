@@ -29,13 +29,6 @@ export function IncidentDetail({ incident, onAction }: IncidentDetailProps) {
     }, 500);
   };
 
-  const receivedTime = new Date(incident.receivedAt).toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    timeZone: "UTC",
-  });
-
   return (
     <div className="flex flex-col h-full bg-white overflow-auto">
       {/* Header */}
@@ -56,7 +49,7 @@ export function IncidentDetail({ incident, onAction }: IncidentDetailProps) {
         </div>
         <p className="text-sm text-zinc-600">
           Patient: <span className="font-semibold">{incident.patientName}</span> (ID:{" "}
-          {incident.patientId}) | Rcvd: <span className="font-semibold">{receivedTime}</span>
+          {incident.patientId}) | Received: <span className="font-semibold">{incident.receivedAt}</span>
         </p>
       </div>
 
