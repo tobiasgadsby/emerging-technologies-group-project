@@ -25,7 +25,7 @@ const MOCK_INCIDENTS: Incident[] = [
     incidentId: 42846,
     patientId: 2015,
     patientName: "Bob Bob",
-    practitionerId: 5031,
+  practitionerId: 5032,
     status: "IN_PROGRESS",
     reportedIssue: "Dizziness",
     mlSummary:
@@ -40,7 +40,7 @@ const MOCK_INCIDENTS: Incident[] = [
     incidentId: 42845,
     patientId: 1847,
     patientName: "Charith IOT",
-    practitionerId: 5031,
+  practitionerId: 5033,
     status: "IN_PROGRESS",
     reportedIssue: "Nausea and Abdominal Discomfort",
     mlSummary:
@@ -55,7 +55,7 @@ const MOCK_INCIDENTS: Incident[] = [
     incidentId: 42844,
     patientId: 2201,
     patientName: "Joan Smith",
-    practitionerId: 5031,
+  practitionerId: 5032,
     status: "RESOLVED",
     practitionerAction: "NO_ACTION",
     reportedIssue: "Headache",
@@ -85,13 +85,35 @@ const MOCK_INCIDENTS: Incident[] = [
   },
 ];
 
+const PRACTITIONER_IDS = Array.from(
+  new Set(MOCK_INCIDENTS.map((incident) => incident.practitionerId))
+).sort((left, right) => left - right);
+
+type PractitionerSelection = number | "all";
+
 export default function Dashboard() {
-  const [selectedId, setSelectedId] = useState<number | null>(
-    MOCK_INCIDENTS[0].incidentId
+  const [selectedPractitionerId, setSelectedPractitionerId] = useState<PractitionerSelection>(
+    "all"
   );
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const [incidents, setIncidents] = useState<Incident[]>(MOCK_INCIDENTS);
 
-  const selectedIncident = incidents.find((i) => i.incidentId === selectedId) || null;
+  const visibleIncidents =
+    selectedPractitionerId === "all"
+      ? incidents
+      : incidents.filter(
+          (incident) => incident.practitionerId === selectedPractitionerId
+        );
+
+  const practitionerLabel =
+    selectedPractitionerId === "all"
+      ? "All practitioners"
+      : `Practitioner #${selectedPractitionerId}`;
+
+  const selectedIncident =
+    visibleIncidents.find((incident) => incident.incidentId === selectedId) ||
+    visibleIncidents[0] ||
+    null;
 
   const handleAction = (action: "false-alarm" | "transfer") => {
     if (!selectedIncident) return;
@@ -124,16 +146,46 @@ export default function Dashboard() {
       <div className="w-80 border-r border-zinc-200 bg-white flex flex-col">
         <div className="border-b border-zinc-200 p-4 sticky top-0 bg-white">
           <h2 className="text-lg font-bold text-zinc-900">Your Incidents</h2>
-          <p className="text-xs text-zinc-600 mt-1">
-            {incidents.length} incident{incidents.length !== 1 ? "s" : ""}
+          <div className="mt-3 space-y-2">
+            <label className="block text-xs font-semibold uppercase tracking-wide text-zinc-500">
+              Practitioner ID
+            </label>
+            <select
+              value={selectedPractitionerId}
+              onChange={(event) =>
+                setSelectedPractitionerId(
+                  event.target.value === "all"
+                    ? "all"
+                    : Number(event.target.value)
+                )
+              }
+              className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-zinc-500 focus:outline-none"
+            >
+              <option value="all">All practitioners</option>
+              {PRACTITIONER_IDS.map((practitionerId) => (
+                <option key={practitionerId} value={practitionerId}>
+                  Practitioner #{practitionerId}
+                </option>
+              ))}
+            </select>
+          </div>
+          <p className="text-xs text-zinc-600 mt-3">
+            {visibleIncidents.length} incident{visibleIncidents.length !== 1 ? "s " : " "}
+            for {practitionerLabel.toLowerCase()}
           </p>
         </div>
         <div className="flex-1 overflow-y-auto p-3">
-          <IncidentList
-            incidents={incidents}
-            selectedId={selectedId}
-            onSelectIncident={setSelectedId}
-          />
+          {visibleIncidents.length > 0 ? (
+            <IncidentList
+              incidents={visibleIncidents}
+              selectedId={selectedIncident?.incidentId ?? null}
+              onSelectIncident={setSelectedId}
+            />
+          ) : (
+            <div className="rounded-lg border border-dashed border-zinc-300 bg-zinc-50 p-4 text-sm text-zinc-600">
+              No incidents match this practitioner selection.
+            </div>
+          )}
         </div>
       </div>
 
