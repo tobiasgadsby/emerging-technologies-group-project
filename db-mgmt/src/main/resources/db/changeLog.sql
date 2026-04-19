@@ -2,6 +2,7 @@
 
 --changeset orchestration:1
 
+CREATE EXTENSION postgis;
 
 CREATE TABLE practitioners
 (
