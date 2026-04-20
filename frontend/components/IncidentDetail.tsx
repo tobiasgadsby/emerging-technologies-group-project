@@ -2,15 +2,28 @@
 
 import { useState } from "react";
 import { Incident } from "@/types/incident";
+import {useMutation} from "@tanstack/react-query";
+import axios from "axios";
 
 interface IncidentDetailProps {
   incident: Incident | null;
   onAction?: (action: "false-alarm" | "transfer") => void;
 }
 
+
 export function IncidentDetail({ incident, onAction }: IncidentDetailProps) {
   const [showConfirm, setShowConfirm] = useState<"false-alarm" | "transfer" | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+    const updateIncident = useMutation({
+        mutationFn: (incident: Incident) => {
+            return axios.put('http://localhost:8080/incidents', {
+                body: JSON.stringify({
+                    'incidentId': incident.incidentId
+                })
+            })
+        }
+    })
 
   if (!incident) {
     return (
@@ -27,6 +40,8 @@ export function IncidentDetail({ incident, onAction }: IncidentDetailProps) {
       setShowConfirm(null);
       setIsLoading(false);
     }, 500);
+    action === "false-alarm" ? incident.practitionerAction = 'NO_ACTION' : incident.practitionerAction = 'HOSPITAL_TRANSFER';
+    updateIncident.mutate(incident)
   };
 
   return (
@@ -44,7 +59,7 @@ export function IncidentDetail({ incident, onAction }: IncidentDetailProps) {
                 : "bg-green-100 text-green-800"
             }`}
           >
-            {incident.status === "IN_PROGRESS" ? "IN PROGRESS" : "RESOLVED"}
+            {incident.incidentStatus}
           </span>
         </div>
         <p className="text-sm text-zinc-600">
@@ -86,7 +101,7 @@ export function IncidentDetail({ incident, onAction }: IncidentDetailProps) {
         </section>
 
         {/* Decision Buttons */}
-        {incident.status === "IN_PROGRESS" && (
+        {incident.incidentStatus === "IN_PROGRESS" && (
           <section>
             <h2 className="text-xs font-bold text-zinc-600 uppercase tracking-wide mb-2">
               Your Decision

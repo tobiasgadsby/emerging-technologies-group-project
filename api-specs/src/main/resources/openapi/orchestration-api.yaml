@@ -170,6 +170,22 @@ paths:
           description: Validation exception
         default:
           description: Unexpected error
+  /practitioners/ids:
+    get:
+      tags:
+        - Practitioners
+      summary: Retrieve all practitioner IDs
+      operationId: getPractitionerIds
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+
 components:
   schemas:
     Incident:
@@ -187,7 +203,21 @@ components:
         patientId:
           type: integer
           format: int64
-        status:
+        reportedIssue:
+          type: string
+        receivedAt:
+          type: string
+        patientName:
+          type: string
+        mlSummary:
+          type: string
+        confidence:
+          type: number
+        audioDuration:
+          type: integer
+        transcript:
+          type: string
+        incidentStatus:
           type: string
           enum:
             - AWAITING_PRACTITIONER_ACTION

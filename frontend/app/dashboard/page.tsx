@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { IncidentList } from "@/components/IncidentList";
 import { IncidentDetail } from "@/components/IncidentDetail";
 import { Incident } from "@/types/incident";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
+import axios from "axios";
 
 const MOCK_INCIDENTS: Incident[] = [
 {
@@ -75,23 +77,55 @@ const MOCK_INCIDENTS: Incident[] = [
   },
 ];
 
-const PRACTITIONER_IDS = [1, 2, 3];
-
 type PractitionerSelection = number | "all";
 
 export default function Dashboard() {
   const [selectedPractitionerId, setSelectedPractitionerId] = useState<PractitionerSelection>(
-    "all"
+    1
   );
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [incidents, setIncidents] = useState<Incident[]>(MOCK_INCIDENTS);
+
+  const queryClient = useQueryClient();
+
+  const [selectedIncidentId, setSelectedIncidentId] = useState<number | null>(null);
+
+    const {data: practitionerIds} = useQuery({
+        queryKey: ["practitionerIds"],
+        queryFn: async () => {
+            const res = await fetch(`http://localhost:8080/practitioners/ids`);
+            return res.json();
+        },
+        initialData: []
+
+    });
+
+    const {data: incidentData} = useQuery({
+        queryKey: ['incidentData', selectedIncidentId],
+        queryFn: async () => {
+            const res = await fetch(`http://localhost:8080/incidents/${selectedIncidentId}`);
+            return res.json();
+        }
+    })
+
+    useEffect(() => {
+        queryClient.invalidateQueries({ queryKey: ["incidentData"] });
+    }, [selectedIncidentId, queryClient]);
+
+    const {data: incidents, isLoading, error} = useQuery({
+        queryKey: ["incidents", selectedPractitionerId],
+        queryFn: async () => {
+            const res = await fetch(`http://localhost:8080/practitioners/${selectedPractitionerId}/incidents`);
+            return res.json();
+        },
+        initialData: []
+
+    })
 
   // Show all incidents or for specific practitioner ID..
   const visibleIncidents =
     selectedPractitionerId === "all"
       ? incidents
       : incidents.filter(
-          (incident) => incident.practitionerId === selectedPractitionerId
+          (incident: Incident) => incident.practitionerId === selectedPractitionerId
         );
 
   const practitionerLabel =
@@ -101,7 +135,7 @@ export default function Dashboard() {
 
   // Rolls back to first incident when status changes
   const selectedIncident =
-    visibleIncidents.find((incident) => incident.incidentId === selectedId) ||
+    visibleIncidents.find((incident) => incident.incidentId === selectedIncidentId) ||
     visibleIncidents[0] ||
     null;
 
@@ -120,7 +154,6 @@ export default function Dashboard() {
           }
         : i
     );
-    setIncidents(updated);
 
     // When status changes, move to next active incident
     const nextUrgent = updated.find(
@@ -128,7 +161,7 @@ export default function Dashboard() {
         i.status === "IN_PROGRESS" && i.incidentId !== selectedIncident.incidentId
     );
     if (nextUrgent) {
-      setSelectedId(nextUrgent.incidentId);
+      setSelectedIncidentId(nextUrgent.incidentId);
     }
   };
 
@@ -153,7 +186,7 @@ export default function Dashboard() {
               className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-zinc-500 focus:outline-none"
             >
               <option value="all">All practitioners</option>
-              {PRACTITIONER_IDS.map((practitionerId) => (
+              {practitionerIds.map((practitionerId: number) => (
                 <option key={practitionerId} value={practitionerId}>
                   Practitioner #{practitionerId}
                 </option>
@@ -170,7 +203,7 @@ export default function Dashboard() {
             <IncidentList
               incidents={visibleIncidents}
               selectedId={selectedIncident?.incidentId ?? null}
-              onSelectIncident={setSelectedId}
+              onSelectIncident={setSelectedIncidentId}
             />
           ) : (
             <div className="rounded-lg border border-dashed border-zinc-300 bg-zinc-50 p-4 text-sm text-zinc-600">
@@ -182,7 +215,7 @@ export default function Dashboard() {
 
       {/* Right side of screen with incident details */}
       <div className="flex-1">
-        <IncidentDetail incident={selectedIncident} onAction={handleAction} />
+        <IncidentDetail incident={incidentData} onAction={handleAction} />
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import com.emergingtech.orchestration.db.service.IncidentDbService;
 import com.emergingtech.orchestration.mapper.IncidentMapper;
 import jakarta.inject.Inject;
 
+import java.math.BigInteger;
 import java.util.List;
 
 public class PractitionerController implements PractitionersResource {
@@ -22,6 +23,10 @@ public class PractitionerController implements PractitionersResource {
                 .map(incidentMapper::mapIncidentEntityToIncidentDto)
                 .toList();
 
+    }
+
+    public List<BigInteger> getPractitionerIds() {
+        return incidentDbService.getIncidentIds();
     }
 
 }

@@ -9,6 +9,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @ApplicationScoped
@@ -26,6 +27,16 @@ public class IncidentDbService {
     @Transactional
     public Incident updateIncident(Incident incident) {
         return entityManager.merge(incident);
+    }
+
+    public List<BigInteger> getIncidentIds() {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = builder.createQuery(Long.class);
+        Root<Incident> incident = query.from(Incident.class);
+        query.select(incident.get("incidentId"));
+        return entityManager.createQuery(query).getResultList().stream().map(
+                BigInteger::valueOf
+        ).toList();
     }
 
     @Transactional

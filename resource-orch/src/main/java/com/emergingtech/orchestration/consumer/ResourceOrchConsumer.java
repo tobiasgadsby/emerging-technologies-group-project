@@ -14,7 +14,7 @@ public class ResourceOrchConsumer {
     @Inject
     ResourceOrchService resourceOrchService;
 
-    @Incoming("action-request")
+    @Incoming("action-request-in")
     public void actionRequest(PractitionerActionRequest practitionerActionRequest) {
 
         LOG.infof("Received action request, Incident ID: %s", practitionerActionRequest.getIncidentId());

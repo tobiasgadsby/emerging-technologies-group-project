@@ -2,6 +2,7 @@ package com.emergingtech.orchestration.controller;
 
 import com.emergingtech.IncidentsResource;
 import com.emergingtech.beans.Incident;
+import com.emergingtech.beans.Incident.IncidentStatus;
 import com.emergingtech.orchestration.common.PractitionerAction;
 import com.emergingtech.orchestration.db.model.Patient;
 import com.emergingtech.orchestration.db.model.Practitioner;
@@ -27,11 +28,29 @@ public class IncidentController implements IncidentsResource {
 
     @Override
     public Incident getIncident(Long incidentId) {
-        return null;
+        incidentDbService.getIncidentById(incidentId);
+        Incident incident = incidentMapper.mapIncidentEntityToIncidentDto(incidentDbService.getIncidentById(incidentId));
+        incident.setAudioDuration(154);
+        incident.setConfidence(84.42);
+        incident.setMlSummary("Patient ML Summary");
+        incident.setReceivedAt("Patient Received At");
+        incident.setReportedIssue("Patient Reported Issue");
+        incident.setPatientName("Patient Name");
+        incident.setTranscript(incident.getTranscript());
+        incident.setIncidentStatus(IncidentStatus.IN_PROGRESS);
+        return incident;
     }
 
     @Override
     public Incident updateIncident(Incident incident) {
+
+        if (incidentDbService.exists(Practitioner.class, Long.valueOf(incident.getPractitionerId()))) {
+            throw new NotFoundException("Practitioner with id " + incident.getPractitionerId() + " not found");
+        }
+
+        if (incidentDbService.exists(Patient.class, Long.valueOf(incident.getPatientId()))) {
+            throw new NotFoundException("Patient with id " + incident.getPatientId() + " not found");
+        }
 
         com.emergingtech.orchestration.db.model.Incident updatedIncident = incidentDbService.updateIncident(incidentMapper.mapIncidentDtoToIncidentEntity(incident));
 

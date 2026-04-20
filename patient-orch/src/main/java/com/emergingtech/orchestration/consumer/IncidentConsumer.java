@@ -1,10 +1,10 @@
 package com.emergingtech.orchestration.consumer;
 
+import com.emergingtech.orchestration.db.common.IncidentStatus;
 import com.emergingtech.orchestration.db.model.Incident;
 import com.emergingtech.orchestration.db.service.IncidentDbService;
 import com.emergingtech.orchestration.mapper.IncidentMapper;
 import com.emergingtech.orchestration.producer.PatientProducer;
-import com.emergingtech.proto.Common.IncidentStatus;
 import com.emergingtech.proto.Incident.IncidentRequest;
 import com.emergingtech.proto.Incident.IncidentResponse;
 import com.emergingtech.proto.Patient.PatientUpdate;

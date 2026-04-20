@@ -1,6 +1,8 @@
 "use client";
 
 import { Incident } from "@/types/incident";
+import {useQuery} from "@tanstack/react-query";
+import axios from "axios";
 
 interface IncidentListProps {
   incidents: Incident[];
@@ -19,6 +21,8 @@ export function IncidentList({
     const bUrgent = b.status === "IN_PROGRESS" ? 0 : 1;
     return aUrgent - bUrgent;
   });
+
+  console.log(incidents)
 
   return (
     <div className="space-y-2 overflow-y-auto">
@@ -47,7 +51,7 @@ export function IncidentList({
                     : "bg-green-100 text-green-800"
                 }`}
               >
-                {isInProgress ? "IN PROGRESS" : "RESOLVED"}
+                {incident.incidentStatus}
               </span>
             </div>
             <div className="text-sm font-semibold text-zinc-900 mb-1">

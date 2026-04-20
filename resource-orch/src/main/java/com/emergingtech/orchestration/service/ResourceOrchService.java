@@ -7,6 +7,7 @@ import com.emergingtech.orchestration.db.service.IncidentDbService;
 import com.emergingtech.orchestration.db.service.ResourceMappingDbService;
 import com.emergingtech.orchestration.producer.ResourceOrchProducer;
 import com.emergingtech.proto.Common.Coordinates;
+import com.emergingtech.proto.Common.IncidentStatus;
 import com.emergingtech.proto.Incident.IncidentResponse;
 import com.emergingtech.proto.ResourceMapper.PractitionerActionRequest;
 import com.emergingtech.proto.ResourceMapper.ResourceMappingRequest;
@@ -25,7 +26,7 @@ import java.util.TimeZone;
 @ApplicationScoped
 public class ResourceOrchService {
 
-    @Channel("action-request")
+    @Channel("mapping-request")
     Emitter<ResourceMappingRequest> resourceMappingRequest;
 
     @Inject
@@ -59,7 +60,7 @@ public class ResourceOrchService {
         resourceMapping.setStatus(ResourceStatus.MAPPED.toString());
         resourceMapping.setEstimatedArrivalTime(Instant.ofEpochSecond(resourceMappingResponse.getArrivalTime().getSeconds(), resourceMapping.getEstimatedArrivalTime().getNano()).atZone(ZoneOffset.UTC).toLocalDateTime());
         resourceMappingDbService.updateResourceMapping(resourceMapping);
-        resourceOrchProducer.sendIncidentResponse(IncidentResponse.newBuilder().setIncidentId(resourceMapping.getResourceId()).setStatus(resourceMapping.getStatus()).build());
+        resourceOrchProducer.sendIncidentResponse(IncidentResponse.newBuilder().setIncidentId(resourceMapping.getResourceId()).setIncidentStatus(IncidentStatus.valueOf(resourceMapping.getStatus())).build());
 
     }
 
