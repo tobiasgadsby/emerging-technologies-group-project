@@ -172,7 +172,6 @@ if __name__ == "__main__":
             
             output_path = os.path.join(UPLOADS_DIR, f"recording_{counter}.webm")
             text = transcriber.transcribe(output_path)
-            print(f"Text:  {text}")
             symptoms, probs = analyse_symptoms(text, model, vectorizer)
 
             incident_request = {

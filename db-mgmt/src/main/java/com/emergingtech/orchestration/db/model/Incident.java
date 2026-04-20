@@ -26,6 +26,8 @@ public class Incident {
 
     private String status;
 
+    private String transcript;
+
     @Column(columnDefinition = "geometry(Point, 4326)")
     private Point location;
 
