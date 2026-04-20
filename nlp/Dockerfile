@@ -11,6 +11,10 @@ COPY . /sos-nlp
 WORKDIR /sos-nlp
 
 RUN mkdir -p /uploads
+
+RUN pip install --no-cache-dir \
+    torch --index-url https://download.pytorch.org/whl/cpu
+
 RUN pip install -r requirements.txt
 
 ENTRYPOINT ["python"]
