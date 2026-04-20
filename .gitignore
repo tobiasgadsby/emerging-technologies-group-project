@@ -4,3 +4,9 @@
 .quarkus
 *.iml
 */.mvn
+frontend/.next
+nlp/uploads
+nlp/vectorizer.pkl
+nlp/gbdt_model.pkl
+nlp/__pycache__
+frontend/node_modules

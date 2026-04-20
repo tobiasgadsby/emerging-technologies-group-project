@@ -22,6 +22,7 @@ CREATE TABLE incidents
     location           GEOMETRY(Point, 4326),
     status             VARCHAR(100),
     practitionerAction VARCHAR(100),
+    transcript varchar(200),
     CONSTRAINT fk_practitioner FOREIGN KEY (practitionerId) REFERENCES practitioners (practitionerId),
     CONSTRAINT fk_patient FOREIGN KEY (patientId) REFERENCES patients (patientId)
 );
