@@ -1,16 +1,27 @@
 import numpy as np
 import joblib
 import os
+#import incident_pb2
+from kafka import KafkaConsumer, KafkaProducer
+from random import randint
+from base64 import b64decode
+from json import loads
 
+#incidentRequest = incident_pb2.IncidentRequest()
+#incidentRequest.patientId = 1234
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 from transcription import TranscriptionService
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_FILE = os.path.join(BASE_DIR,"gbdt_model.pkl")
+VECTORIZER_FILE = os.path.join(BASE_DIR,"vectorizer.pkl")
+UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
+os.makedirs(UPLOADS_DIR, exist_ok=True)
 
-MODEL_FILE = "gbdt_model.pkl"
-VECTORIZER_FILE = "vectorizer.pkl"
-
+ffmpeg_path = r'C:\ffmpeg-8.1-essentials_build\bin' 
+os.environ["PATH"] += os.pathsep + ffmpeg_path
 
 def get_training_data():
     data = [
@@ -124,16 +135,47 @@ if __name__ == "__main__":
     whisper_size = "base"
     transcriber = TranscriptionService(model_size=whisper_size)
 
-    while True:
-        audio_path = input("\nPath to audio file (or 'quit' to exit): ").strip()
-        if audio_path.lower() == "quit":
-            break
+    counter = randint(1,1000000)
 
-        print("Transcribing...")
-        transcribed = transcriber.transcribe(audio_path)
+    print("Setting up a Kafka CONSUMER")
+    consumer = KafkaConsumer(
+        'audio',
+        bootstrap_servers='kafka.cm3202.uk',
+        fetch_max_bytes=10485880,
+        value_deserializer=lambda x: loads(x.decode('utf-8'))
+    )
 
-        if transcribed.startswith("Error:"):
-            print(transcribed)
-            continue
+    # print("Setting up a Kafka PRODUCER")
+    # producer = KafkaProducer(
+    #     bootstrap_servers='kafka.cm3202.uk',
+    #     group_id='nlp-processor-group',
+    #     auto_offset_reset='latest',
 
-        analyse_symptoms(transcribed, model, vectorizer)
+    # )
+
+
+    if not os.path.exists(UPLOADS_DIR):
+        os.makedirs(UPLOADS_DIR)
+
+    try:
+        for msg in consumer:
+            with open(os.path.join(UPLOADS_DIR, f"recording_{counter}.webm"), "wb") as f:
+                print(os.path.join(UPLOADS_DIR, f"recording_{counter}.webm"))
+                audio_data = msg.value["audio"].encode('utf-8')
+                f.write(b64decode(audio_data))
+                counter += 1
+                print(f"Written uploads/recording_{counter}.webm")    
+            
+            patient_id = msg.value["patient_id"]
+            longitude = msg.value["longitude"]
+            latitude = msg.value["latitude"]
+            print(f"Patient ID: {patient_id}, long: {longitude}, lat: {latitude}")
+            
+            output_path = os.path.join(UPLOADS_DIR, f"recording_{counter}.webm")
+            text = transcriber.transcribe(output_path)
+            print(text)
+
+    except KeyboardInterrupt:
+        print("\nStopping consumer...")
+    finally:
+        consumer.close()
