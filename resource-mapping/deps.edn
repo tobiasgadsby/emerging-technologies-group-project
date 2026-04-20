@@ -1,6 +1,7 @@
 {:paths ["src" "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.12.4"}
-        aysylu/loom {:mvn/version "1.0.2"}}
+        aysylu/loom {:mvn/version "1.0.2"}
+        org.apache.kafka/kafka-clients {:mvn/version "4.2.0"}}
  :aliases
  {:run-m {:main-opts ["-m" "jamescrake-merani.resource-mapping"]}
   :run-x {:ns-default jamescrake-merani.resource-mapping

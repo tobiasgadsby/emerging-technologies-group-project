@@ -10,3 +10,8 @@ nlp/vectorizer.pkl
 nlp/gbdt_model.pkl
 nlp/__pycache__
 frontend/node_modules
+
+.classpath
+.factorypath
+.project
+.settings
