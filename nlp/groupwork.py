@@ -163,7 +163,6 @@ if __name__ == "__main__":
                 print(os.path.join(UPLOADS_DIR, f"recording_{counter}.webm"))
                 audio_data = msg.value["audio"].encode('utf-8')
                 f.write(b64decode(audio_data))
-                counter += 1
                 print(f"Written uploads/recording_{counter}.webm")    
             
             patient_id = msg.value["patient_id"]
@@ -174,6 +173,8 @@ if __name__ == "__main__":
             output_path = os.path.join(UPLOADS_DIR, f"recording_{counter}.webm")
             text = transcriber.transcribe(output_path)
             print(text)
+
+            counter += 1
 
     except KeyboardInterrupt:
         print("\nStopping consumer...")
