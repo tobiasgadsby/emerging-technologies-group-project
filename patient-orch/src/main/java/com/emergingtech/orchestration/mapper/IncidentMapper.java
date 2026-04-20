@@ -12,4 +12,6 @@ public interface IncidentMapper {
     @Mapping(target = "practitionerAction", ignore = true)
     Incident mapIncidentRequestToIncidentEntity(IncidentRequest incidentRequest);
 
+
+
 }

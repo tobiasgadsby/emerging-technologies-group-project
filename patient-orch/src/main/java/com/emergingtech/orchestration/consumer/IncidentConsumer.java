@@ -13,6 +13,9 @@ import jakarta.inject.Inject;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.jboss.logging.Logger;
 
+import java.util.Base64;
+import java.util.Map;
+
 @ApplicationScoped
 public class IncidentConsumer {
 
@@ -28,14 +31,16 @@ public class IncidentConsumer {
     PatientProducer patientProducer;
 
     @Incoming("incident-request")
-    public void incidentRequest(IncidentRequest incident) {
-        LOG.infof("Incident Request Received, Patient ID: %d", incident.getPatientId());
-        incidentDbService.createIncident(incidentMapper.mapIncidentRequestToIncidentEntity(incident));
+    public void incidentRequest(Map<String, Object> incident) {
+        LOG.infof("Incident Request Received, Patient ID: %d", incident);
+//        incidentDbService.createIncident(incidentMapper.mapIncidentRequestToIncidentEntity(incident));
     }
 
     @Incoming("incident-response")
     public void incidentResponse(IncidentResponse incident) {
         LOG.infof("Incident Response Received, Incident ID: %d", incident.getIncidentId());
+
+        PatientUpdate.parseFrom(Base64.getDecoder().decode())
         incidentDbService.updateIncident(Incident.builder()
                         .incidentId(incident.getIncidentId())
                         .status(incident.getIncidentStatus().name())

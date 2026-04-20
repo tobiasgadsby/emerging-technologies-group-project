@@ -5,7 +5,7 @@ import os
 from kafka import KafkaConsumer, KafkaProducer
 from random import randint
 from base64 import b64decode
-from json import loads
+from json import loads, dumps
 
 #incidentRequest = incident_pb2.IncidentRequest()
 #incidentRequest.patientId = 1234
@@ -115,12 +115,7 @@ def analyse_symptoms(text, model, vectorizer):
     print("Risk Level:", risk)
     print("Confidence:", probs)
 
-    if conditions:
-        print("Possible Conditions:")
-        for c in conditions:
-            print(" -", c)
-    else:
-        print("No clear condition identified.")
+    return text, probs
 
 
 if __name__ == "__main__":
@@ -143,6 +138,12 @@ if __name__ == "__main__":
         bootstrap_servers='kafka.cm3202.uk',
         fetch_max_bytes=10485880,
         value_deserializer=lambda x: loads(x.decode('utf-8'))
+    )
+
+    producer = KafkaProducer(
+        bootstrap_servers='kafka.cm3202.uk',
+        max_request_size=10485880,
+        value_serializer=lambda x: dumps(x).encode('utf-8')
     )
 
     # print("Setting up a Kafka PRODUCER")
@@ -172,6 +173,17 @@ if __name__ == "__main__":
             output_path = os.path.join(UPLOADS_DIR, f"recording_{counter}.webm")
             text = transcriber.transcribe(output_path)
             print(f"Text:  {text}")
+            symptoms, probs = analyse_symptoms(text, model, vectorizer)
+
+            incident_request = {
+                'patient_id': patient_id,
+                'transcript': text,
+            }
+            print(f"Incident request: {incident_request}")
+
+            future = producer.send('incident-request', value=incident_request)
+            future.get()
+
 
             counter += 1
 
