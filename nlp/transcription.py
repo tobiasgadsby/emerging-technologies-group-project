@@ -12,7 +12,7 @@ class TranscriptionService:
 
     def transcribe(self, audio_path):
         #check if the file can be found
-        print(audio_path)
+        #print(audio_path)
 
         if not os.path.exists(audio_path):
             return "Error: Audio file not found at path."

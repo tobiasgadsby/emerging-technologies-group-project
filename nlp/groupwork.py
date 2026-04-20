@@ -160,10 +160,9 @@ if __name__ == "__main__":
     try:
         for msg in consumer:
             with open(os.path.join(UPLOADS_DIR, f"recording_{counter}.webm"), "wb") as f:
-                print(os.path.join(UPLOADS_DIR, f"recording_{counter}.webm"))
                 audio_data = msg.value["audio"].encode('utf-8')
                 f.write(b64decode(audio_data))
-                print(f"Written uploads/recording_{counter}.webm")    
+                print(f"Written audio to uploads/recording_{counter}.webm")    
             
             patient_id = msg.value["patient_id"]
             longitude = msg.value["longitude"]
@@ -172,7 +171,7 @@ if __name__ == "__main__":
             
             output_path = os.path.join(UPLOADS_DIR, f"recording_{counter}.webm")
             text = transcriber.transcribe(output_path)
-            print(text)
+            print(f"Text:  {text}")
 
             counter += 1
 
