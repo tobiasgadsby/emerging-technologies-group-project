@@ -4,6 +4,7 @@ from base64 import b64encode
 from random import randint
 from threading import Thread
 from json import dumps, loads
+import patient_pb2
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret_key'
@@ -67,17 +68,21 @@ def audio():
 
 def consume():
     consumer = KafkaConsumer(
-        'notifs',
+        'patient-update',
         bootstrap_servers='kafka.cm3202.uk',
-        fetch_max_bytes=10485880,
-        value_deserializer=lambda x: loads(x.decode('utf-8'))
+        fetch_max_bytes=10485880
     )
 
     for msg in consumer:
-        patient_id = msg.value["patient_id"]
+        proto_msg = patient_pb2.PatientUpdate()
+        proto_msg.ParseFromString(msg.value)
+
+        print(proto_msg)
+
+        patient_id = proto_msg.patientId
         if patient_id in patients:
             patient = patients[patient_id]
-            patient.notifications.append(msg.value["notification"])
+            patient.notifications.append(proto_msg.incidentStatus)
 
 if __name__ == '__main__':
     Thread(target=consume, daemon=True).start()
