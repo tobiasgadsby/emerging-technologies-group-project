@@ -10,6 +10,9 @@ public interface IncidentMapper {
 
     @Mapping(target = "incidentId", ignore = true)
     @Mapping(target = "practitionerAction", ignore = true)
+    @Mapping(source = "text", target = "transcript")
     Incident mapIncidentRequestToIncidentEntity(IncidentRequest incidentRequest);
+
+
 
 }
