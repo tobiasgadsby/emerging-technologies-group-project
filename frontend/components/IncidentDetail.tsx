@@ -15,15 +15,26 @@ export function IncidentDetail({ incident, onAction }: IncidentDetailProps) {
   const [showConfirm, setShowConfirm] = useState<"false-alarm" | "transfer" | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-    const updateIncident = useMutation({
-        mutationFn: (incident: Incident) => {
-            return axios.put('http://localhost:8080/incidents', {
-                body: JSON.stringify({
-                    'incidentId': incident.incidentId
-                })
-            })
-        }
-    })
+    // const updateIncident = useMutation({
+    //     mutationFn: ({incident, action}: { incident: Incident; action: string }) => {
+    //         return axios({
+    //             method: "put",
+    //             url: 'http://localhost:8100/incidents',
+    //             data: {
+    //                 incident: {
+    //                     incidentId: incident.incidentId,
+    //                     practitionerId: incident.practitionerId,
+    //                     patientId: incident.patientId,
+    //                     transcript: incident.transcript,
+    //                     incidentStatus: action
+    //                 }
+    //             }
+    //             params: {
+    //                 params:
+    //             }
+    //         })
+    //     }
+    // })
 
   if (!incident) {
     return (
@@ -40,8 +51,7 @@ export function IncidentDetail({ incident, onAction }: IncidentDetailProps) {
       setShowConfirm(null);
       setIsLoading(false);
     }, 500);
-    action === "false-alarm" ? incident.practitionerAction = 'NO_ACTION' : incident.practitionerAction = 'HOSPITAL_TRANSFER';
-    updateIncident.mutate(incident)
+    updateIncident.mutate({incident, action})
   };
 
   return (

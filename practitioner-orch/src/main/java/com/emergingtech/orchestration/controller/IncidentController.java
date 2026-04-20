@@ -44,6 +44,8 @@ public class IncidentController implements IncidentsResource {
     @Override
     public Incident updateIncident(Incident incident) {
 
+        System.out.println("UPDATE INCIDENT");
+
         if (incidentDbService.exists(Practitioner.class, Long.valueOf(incident.getPractitionerId()))) {
             throw new NotFoundException("Practitioner with id " + incident.getPractitionerId() + " not found");
         }

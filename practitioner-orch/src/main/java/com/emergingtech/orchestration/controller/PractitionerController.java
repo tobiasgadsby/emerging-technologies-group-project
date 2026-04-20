@@ -19,6 +19,8 @@ public class PractitionerController implements PractitionersResource {
 
     public List<Incident> getIncidentsByPractitionerId(Long practitionerId) {
 
+        System.out.print("getIncidentsByPractitionerId()");
+
         return incidentDbService.getIncidentsByPractitionerId(practitionerId).stream()
                 .map(incidentMapper::mapIncidentEntityToIncidentDto)
                 .toList();
@@ -26,7 +28,7 @@ public class PractitionerController implements PractitionersResource {
     }
 
     public List<BigInteger> getPractitionerIds() {
-        return incidentDbService.getIncidentIds();
+        return List.of(BigInteger.valueOf(1L));
     }
 
 }

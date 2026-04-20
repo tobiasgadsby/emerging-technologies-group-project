@@ -26,13 +26,6 @@ public class ResourceMapping {
     @Channel("resource-response")
     Emitter<ResourceMappingResponse> emitter;
 
-    public ResourceMapping() {
-        IFn require = Clojure.var("clojure.core", "require");
-        require.invoke(Clojure.read("jamescrake-merani.resource-mapping"));
-        positions = Clojure.var("jamescrake-merani.resource-mapping", "positions");
-        graph = Clojure.var("jamescrake-merani.resource-mapping", "graph");
-    }
-
     @Incoming("resource-request")
     public void resourceRequest(ResourceMappingRequest resourceMappingRequest) {
         LOG.infof("Resource Request Received, Mapping ID: %d", resourceMappingRequest.getMappingId());

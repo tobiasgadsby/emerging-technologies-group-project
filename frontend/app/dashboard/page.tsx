@@ -91,7 +91,7 @@ export default function Dashboard() {
     const {data: practitionerIds} = useQuery({
         queryKey: ["practitionerIds"],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:8080/practitioners/ids`);
+            const res = await fetch(`http://localhost:8100/practitioners/ids`);
             return res.json();
         },
         initialData: []
@@ -101,7 +101,7 @@ export default function Dashboard() {
     const {data: incidentData} = useQuery({
         queryKey: ['incidentData', selectedIncidentId],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:8080/incidents/${selectedIncidentId}`);
+            const res = await fetch(`http://localhost:8100/incidents/${selectedIncidentId}`);
             return res.json();
         }
     })
@@ -113,7 +113,7 @@ export default function Dashboard() {
     const {data: incidents, isLoading, error} = useQuery({
         queryKey: ["incidents", selectedPractitionerId],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:8080/practitioners/${selectedPractitionerId}/incidents`);
+            const res = await fetch(`http://localhost:8100/practitioners/${selectedPractitionerId}/incidents`);
             return res.json();
         },
         initialData: []
