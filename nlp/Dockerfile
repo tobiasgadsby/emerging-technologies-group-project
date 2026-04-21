@@ -10,8 +10,6 @@ ENV PATH="$PATH:/usr/local/bin/ffmpeg:/usr/local/bin/"
 COPY . /sos-nlp
 WORKDIR /sos-nlp
 
-RUN mkdir -p /uploads
-
 RUN pip install --no-cache-dir \
     torch --index-url https://download.pytorch.org/whl/cpu
 

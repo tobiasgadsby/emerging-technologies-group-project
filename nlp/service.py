@@ -14,46 +14,18 @@ os.makedirs(UPLOADS_DIR, exist_ok=True)
 ffmpeg_path = r'C:\ffmpeg\bin'
 os.environ["PATH"] += os.pathsep + ffmpeg_path
 
-CONDITIONS = {
-    "heart attack":   ["chest pain", "arm", "sweating"],
-    "stroke":         ["slurred", "speech", "numb", "weak"],
-    "sepsis":         ["fever", "confusion"],
-    "asthma":         ["shortness of breath", "breathing"],
-    "flu":            ["fever", "cough", "tired"],
-    "common cold":    ["runny nose", "sore throat"],
-    "migraine":       ["headache"],
-    "food poisoning": ["vomiting", "nausea", "stomach"],
-}
-
-def predict_conditions(text):
-    text = text.lower()
-    matches = []
-
-    for condition, keywords in CONDITIONS.items():
-        score = sum(1 for k in keywords if k in text)
-        if score > 0:
-            matches.append((condition, score))
-
-    matches.sort(key=lambda x: x[1], reverse=True)
-    return [m[0] for m in matches[:3]]
-
-def predict(text):
+def analyse_symptoms(text):
     X = vectoriser.transform([text])
     probs = model.predict_proba(X)[0]
     pred = np.argmax(probs)
     risk = ["LOW", "MODERATE", "HIGH"][pred]
-    return risk, probs
-
-def analyse_symptoms(text):
-    risk, probs = predict(text)
-    conditions = predict_conditions(text)
 
     print("\n--- Results ---")
     print("Symptoms:", text)
     print("Risk Level:", risk)
     print("Confidence:", probs)
 
-    return text, probs
+    return probs
 
 if __name__ == "__main__":
     whisper_size = "base"
@@ -92,7 +64,7 @@ if __name__ == "__main__":
             
             text = transcriber.transcribe(file_path)
             print(f"Text:  {text}")
-            symptoms, probs = analyse_symptoms(text)
+            probs = analyse_symptoms(text)
 
             incident_request = {
                 'patient_id': patient_id,
